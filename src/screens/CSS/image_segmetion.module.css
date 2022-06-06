@@ -1,0 +1,18 @@
+.Home{
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-bottom: 10%;
+}
+.image{
+    height: 450px;
+    /* height: 100%; */
+    /* width:80%; */
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.option{
+    margin-left: 30%;
+    margin-top: 40px;
+}

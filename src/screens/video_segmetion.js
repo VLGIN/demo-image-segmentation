@@ -18,64 +18,89 @@ import { Grid } from '@mui/material';
 import ReactPlayer from 'react-player/lazy'
 
 
-function VideoSegmentation({navigation}) {
+function VideoSegmentation({ navigation }) {
 
 
-    const slideImages = [
-        {
-          url: 'seg_04.jpeg',
-          caption: 'Slide 1'
-        },
-        {
-          url: 'segment_03.jpg',
-          caption: 'Slide 2'
-        },
-      ];
+  const slideImages = [
+    {
+      url: 'seg_04.jpeg',
+      caption: 'Slide 1'
+    },
+    {
+      url: 'segment_03.jpg',
+      caption: 'Slide 2'
+    },
+  ];
 
-    return (
-      <div className={styles.Home}>
+  const routeUpload = 'http://localhost:8000/upload_image'
 
-        <div className={styles.slide_container}>
-            <Slide>
-                {slideImages.map((slideImage, index)=> (
-                    <div className={styles.each_slide} key={index}>
-                        <div className={styles.image} style={{'backgroundImage': `url(${slideImage.url})`}}>
-                            <span>{slideImage.caption}</span>
-                        </div>
-                    </div>
-                ))} 
-            </Slide>
-        </div>
-
-        <div className={styles.option}>
-
-            <Menu/>
-            <br>
-            </br>
-            <input type="file"/>
-            <button>Submit</button>
-            <br>
-            </br>
-            <br>
-            </br>
-        </div>
+  const [url, setUrl] = useState('')
+  const [original_url, setUrl_original_url] = useState('')
+  const [file, setFile] = useState()
 
 
-        <div>
-            <Grid item xs={8}>
-                    <ReactPlayer url='https://www.youtube.com/watch?v=ysz5S6PUM-U' />
+  const submitFile = async file => {
+    var formFile = new FormData();
+    formFile.append("file", file);
+    console.log(file)
+    console.log(formFile)
 
-            </Grid>
-            <br/>
-            <Grid item xs={8}>
-                    <ReactPlayer url='https://www.youtube.com/watch?v=ysz5S6PUM-U' />
-
-            </Grid>
-        </div>
-
-
-      </div>
-    );
+    return axios.post(routeUpload, formFile)
+      .then(res => {
+        console.log(res.data)
+        setUrl("http://127.0.0.1:8000" + res.data.result)
+        setUrl_original_url("http://127.0.0.1:8000" + res.data.original_image)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
   }
-  
-  export default VideoSegmentation;
+
+
+  return (
+    <div className={styles.Home}>
+
+      <div className={styles.slide_container}>
+        <Slide>
+          {slideImages.map((slideImage, index) => (
+            <div className={styles.each_slide} key={index}>
+              <div className={styles.image} style={{ 'backgroundImage': `url(${slideImage.url})` }}>
+                <span>{slideImage.caption}</span>
+              </div>
+            </div>
+          ))}
+        </Slide>
+      </div>
+
+      <div className={styles.option}>
+
+        <Menu />
+        <br>
+        </br>
+        <input type="file" name="file" onChange={e => setFile(e.target.files[0])}/>
+        <button onClick={()=>submitFile(file)}>Submit</button>
+        <br>
+        </br>
+        <br>
+        </br>
+      </div>
+
+
+      <div>
+        <Grid item xs={8}>
+          <ReactPlayer url={original_url} />
+
+        </Grid>
+        <br />
+        <Grid item xs={8}>
+          <ReactPlayer url={url} />
+
+        </Grid>
+      </div>
+
+
+    </div>
+  );
+}
+
+export default VideoSegmentation;

@@ -16,6 +16,8 @@ import Paper from '@mui/material/Paper'
 
 import { Grid } from '@mui/material';
 import ReactPlayer from 'react-player/lazy'
+import { useState } from 'react';
+import axios from 'axios';
 
 
 function VideoSegmentation({ navigation }) {
@@ -49,7 +51,7 @@ function VideoSegmentation({ navigation }) {
       .then(res => {
         console.log(res.data)
         setUrl("http://127.0.0.1:8000" + res.data.result)
-        setUrl_original_url("http://127.0.0.1:8000" + res.data.original_image)
+        setUrl_original_url("http://127.0.0.1:8000" + res.data.original_video)
       })
       .catch((err) => {
         console.log(err);
@@ -88,12 +90,12 @@ function VideoSegmentation({ navigation }) {
 
       <div>
         <Grid item xs={8}>
-          <ReactPlayer url={original_url} />
+          <ReactPlayer url={original_url} controls="true" />
 
         </Grid>
         <br />
         <Grid item xs={8}>
-          <ReactPlayer url={url} />
+          <ReactPlayer url={url} controls="true"/>
 
         </Grid>
       </div>

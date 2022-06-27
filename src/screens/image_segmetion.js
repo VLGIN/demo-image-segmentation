@@ -37,9 +37,10 @@ function ImageSegmentation({ navigation }) {
             caption: 'Slide 2'
         },
     ];
-    const routeUpload = 'http://localhost:9091/api/uploadFile/'
+    const routeUpload = 'http://127.0.0.1:8000/upload_image'
 
     const [url, setUrl] = useState('')
+    const [original_url, setUrl_original_url] = useState('')
     const [file, setFile] = useState()
 
 
@@ -47,9 +48,11 @@ function ImageSegmentation({ navigation }) {
         var formFile = new FormData();
         formFile.append("file", file);
 
-        return axios.post('/uploadFile', formFile)
+        return axios.post(routeUpload, formFile)
         .then(res=>{
-            return res.data.data
+            console.log(res.data)
+            setUrl("http://127.0.0.1:8000"+res.data.result)
+            setUrl_original_url("http://127.0.0.1:8000"+res.data.original_image)
         })
         .catch((err) => {
             console.log(err);
@@ -93,7 +96,7 @@ function ImageSegmentation({ navigation }) {
                                 <CardMedia
                                     component="img"
                                     height="300"
-                                    image="/static/images/cards/contemplative-reptile.jpg"
+                                    image={original_url}
                                     alt="green iguana"
                                 />
                                 <CardContent>

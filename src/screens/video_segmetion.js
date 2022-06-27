@@ -32,7 +32,7 @@ function VideoSegmentation({ navigation }) {
     },
   ];
 
-  const routeUpload = 'http://localhost:8000/upload_image'
+  const routeUpload = 'http://localhost:8000/upload_video'
 
   const [url, setUrl] = useState('')
   const [original_url, setUrl_original_url] = useState('')

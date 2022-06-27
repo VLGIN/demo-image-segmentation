@@ -40,19 +40,20 @@ function ImageSegmentation({ navigation }) {
     const routeUpload = 'http://localhost:9091/api/uploadFile/'
 
     const [url, setUrl] = useState('')
+    const [file, setFile] = useState()
 
-    const submitFile = () => {
+
+    const submitFile = async file =>{
         var formFile = new FormData();
-        var imagefile = document.getElementById('formFile');
-        formFile.append("formFile", imagefile.files[0]);
-        axios.post(routeUpload, formFile, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
+        formFile.append("file", file);
+
+        return axios.post('/uploadFile', formFile)
+        .then(res=>{
+            return res.data.data
         })
-            .then(res => {
-                setUrl(res.data.data)
-            })
+        .catch((err) => {
+            console.log(err);
+        })
     }
 
     return (
@@ -75,8 +76,8 @@ function ImageSegmentation({ navigation }) {
                 <Menu />
                 <br>
                 </br>
-                <input id={'formFile'} type="file" />
-                <button onClick={()=>submitFile()}>Submit</button>
+                <input type="file" name="file" onChange={e => setFile(e.target.files[0])}/>
+                <button onClick={()=>submitFile(file)}>Submit</button>
                 <br>
                 </br>
                 <br>

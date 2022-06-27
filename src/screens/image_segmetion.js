@@ -37,7 +37,7 @@ function ImageSegmentation({ navigation }) {
             caption: 'Slide 2'
         },
     ];
-    const routeUpload = 'http://localhost:9091/api/uploadFile/'
+    const routeUpload = 'http://localhost:8000/upload_image'
 
     const [url, setUrl] = useState('')
     const [file, setFile] = useState()
@@ -46,10 +46,12 @@ function ImageSegmentation({ navigation }) {
     const submitFile = async file =>{
         var formFile = new FormData();
         formFile.append("file", file);
+        console.log(file)
+        console.log(formFile)
 
-        return axios.post('/uploadFile', formFile)
+        axios.post(routeUpload, formFile)
         .then(res=>{
-            return res.data.data
+            setUrl(res.data.data)
         })
         .catch((err) => {
             console.log(err);

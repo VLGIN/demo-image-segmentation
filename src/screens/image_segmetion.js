@@ -16,6 +16,7 @@ import Paper from '@mui/material/Paper'
 import { useState } from 'react';
 import { Grid } from '@mui/material';
 import axios from 'axios';
+import { jsx } from '@emotion/react';
 
 function ImageSegmentation({ navigation }) {
     const Item = styled(Paper)(({ theme }) => ({
@@ -39,7 +40,7 @@ function ImageSegmentation({ navigation }) {
     ];
     const routeUpload = 'http://localhost:8000/upload_image'
 
-    const [url, setUrl] = useState('')
+    const [url, setUrl] = useState({})
     const [original_url, setUrl_original_url] = useState('')
     const [file, setFile] = useState()
 
@@ -49,12 +50,20 @@ function ImageSegmentation({ navigation }) {
         formFile.append("file", file);
         console.log(file)
         console.log(formFile)
+        
 
         return axios.post(routeUpload, formFile)
         .then(res=>{
             console.log(res.data)
+            setUrl({
+                'url': "http://127.0.0.1:8000"+res.data.result,
+                'random_noise': Math.random(),
+                'original_url': "http://127.0.0.1:8000"+res.data.original_image
+            })
+            /*setUrl_original_url("origin": "http://127.0.0.1:8000"+res.data.original_image)
+
             setUrl("http://127.0.0.1:8000"+res.data.result)
-            setUrl_original_url("http://127.0.0.1:8000"+res.data.original_image)
+            setUrl_original_url("http://127.0.0.1:8000"+res.data.original_image)*/
         })
         .catch((err) => {
             console.log(err);
@@ -98,7 +107,7 @@ function ImageSegmentation({ navigation }) {
                                 <CardMedia
                                     component="img"
                                     height="300"
-                                    image={original_url}
+                                    image={url?.original_url}
                                     alt="green iguana"
                                 />
                                 <CardContent>
@@ -116,7 +125,7 @@ function ImageSegmentation({ navigation }) {
                                 <CardMedia
                                     component="img"
                                     height="300"
-                                    image={url}
+                                    image={url?.url}
                                     alt="green iguana"
                                 />
                                 <CardContent>

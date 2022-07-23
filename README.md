@@ -6,4 +6,4 @@ npm i
 npm start
 ```
 
-The app can be accessed at ```localhost:5000```
+The app can be accessed at ```localhost:3000```
